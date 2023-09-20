@@ -19,9 +19,9 @@ const Header: React.FC<HeaderProps> = ({ setIsSidebarOpen }) => {
         <Button onClick={() => setIsSidebarOpen((prev) => !prev)} className={s.header_menu}>
           <SlMenu />
         </Button>
-        <a href="/" className={s.header_link}>
+        <Link to="/" className={s.header_link} reloadDocument>
           <img className={s.header_logo} src={youtubeLogo} alt="youtube logo" />
-        </a>
+        </Link>
       </div>
       <div className={s.header_search}>
         <SearchInput />
