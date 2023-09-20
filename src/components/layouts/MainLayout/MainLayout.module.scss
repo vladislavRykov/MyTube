@@ -1,0 +1,12 @@
+.wrapper {
+  height: 100%;
+  display: grid;
+  grid-template: 10vh 1fr / minmax(8%, auto) 1fr;
+  grid-template-areas:
+    'header header'
+    'sidebar main';
+}
+.main {
+  margin-top: 10px;
+  grid-area: main;
+}

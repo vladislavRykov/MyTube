@@ -1,0 +1,35 @@
+.container {
+  width: 200px;
+}
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  padding-left: 5px;
+  background-color: white;
+  position: fixed;
+  z-index: 100;
+  top: 60px;
+  left: 0;
+  bottom: 0;
+  width: inherit;
+}
+.element {
+  color: black;
+  transition: 0.2s ease-out;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  border-radius: 10px;
+  &_img {
+    font-size: 20px;
+  }
+  &_title {
+  }
+  &:hover {
+    background-color: rgba(128, 128, 128, 0.341);
+  }
+}
+.active {
+  background-color: rgba(128, 128, 128, 0.341);
+}

@@ -1,0 +1,40 @@
+.wrapper {
+  margin-top: 14px;
+  transition: 0.3s;
+  background-color: rgb(237, 237, 237);
+  border-radius: 20px;
+  padding: 20px;
+  &_closedDesc {
+    cursor: pointer;
+    &:hover {
+      background-color: rgb(183, 182, 182);
+    }
+    &:hover .content .toggleDesc {
+      background-color: rgb(183, 182, 182);
+      box-shadow: -5px 0px 10px 0px rgb(183, 182, 182);
+    }
+  }
+  .content {
+    position: relative;
+    overflow: hidden;
+    .toggleDesc {
+      transition: 0.3s;
+      box-shadow: -5px 0px 10px 0px rgb(237, 237, 237);
+      font-weight: 600;
+      padding-left: 5px;
+      background-color: rgb(237, 237, 237);
+      position: absolute;
+      bottom: 0;
+      right: 0;
+    }
+    .videoInfo {
+      font-weight: 500;
+      font-size: 14px;
+      margin-bottom: 14px;
+    }
+    .description {
+      max-height: 42px;
+      line-height: 14px;
+    }
+  }
+}

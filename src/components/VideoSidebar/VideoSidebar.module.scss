@@ -1,0 +1,62 @@
+.linkWrapper {
+  display: flex;
+  flex-direction: column;
+  padding-left: 5px;
+}
+.sidebar {
+  transition: left 0.3s;
+  visibility: hidden;
+  background-color: white;
+  position: fixed;
+  z-index: 0;
+  top: 0;
+  left: -120px;
+  // left: 0px;
+  bottom: 0;
+  width: 220px;
+  &_show {
+    visibility: visible;
+    z-index: 1000;
+    left: 0px;
+  }
+  &_header {
+    height: 10vh;
+    padding: 10px 25px;
+    display: flex;
+    align-items: center;
+    gap: 25px;
+  }
+  &_burger {
+    font-size: 19px;
+    line-height: 19px;
+    padding: 8px;
+  }
+  &_reload {
+    cursor: pointer;
+    position: relative;
+    &::after {
+      content: 'RU';
+      position: absolute;
+      bottom: 100%;
+      left: 100%;
+      font-size: 9.5px;
+      color: gray;
+      font-weight: 500;
+    }
+  }
+  &_logo {
+    width: 70px;
+    height: auto;
+    position: relative;
+  }
+}
+.blackout {
+  transition: 0.3s;
+  background-color: rgba(0, 0, 0, 0.238);
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 120;
+}

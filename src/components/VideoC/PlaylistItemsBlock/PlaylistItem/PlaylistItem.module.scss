@@ -1,0 +1,59 @@
+.playlistItem {
+  cursor: pointer;
+  width: 100%;
+  padding: 10px 20px 10px 0px;
+  height: min-content;
+  display: flex;
+  align-items: center;
+  &_imgWrapper {
+    position: relative;
+    width: 100px;
+  }
+  &_image {
+  }
+  &_time {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    background-color: rgba(0, 0, 0, 0.849);
+    color: white;
+    padding: 3px 4px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  &_selected {
+    background-color: #ece3df;
+    // pointer-events: none;
+  }
+  &_orderNumber {
+    text-align: center;
+    width: 20px;
+    font-size: 12px;
+    color: gray;
+  }
+  &_text {
+    max-width: 200px;
+    width: 100%;
+    margin-left: 5px;
+  }
+  &_author {
+    color: gray;
+    font-size: 11px;
+  }
+  &_title {
+    width: 100%;
+    max-width: 200px;
+    // height: 32px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 600;
+    line-height: 18px;
+  }
+  &:hover:not(.playlistItem_selected) {
+    background-color: rgb(239, 239, 239);
+  }
+}

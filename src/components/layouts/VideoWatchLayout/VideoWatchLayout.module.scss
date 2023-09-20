@@ -1,0 +1,9 @@
+.wrapper {
+  height: 100%;
+  display: grid;
+  grid-template-rows: 10vh 1fr;
+  gap: 10px
+}
+.main {
+  grid-area: main;
+}

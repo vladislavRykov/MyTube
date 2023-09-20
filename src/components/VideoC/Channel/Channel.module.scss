@@ -1,0 +1,93 @@
+.channel {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  .left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .right {
+  }
+  &_info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    &_ava {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+    }
+    &_text {
+      line-height: 16px;
+    }
+    &_name {
+      font-size: 14px;
+      font-weight: 500;
+      color: black;
+    }
+    &_subsCount {
+      color: gray;
+      font-size: 12px;
+    }
+  }
+  &_subscribe {
+    transition: 0.1s;
+    padding: 8px 10px;
+    background-color: black;
+    color: white;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    &:active {
+      background-color: rgb(61, 59, 59);
+    }
+  }
+  &_likeOrDislike {
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    &_like {
+      position: relative;
+      transition: 0.15s;
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      font-size: inherit;
+      font-weight: inherit;
+      border-radius: 25px 0px 0px 25px;
+      background-color: rgb(231, 231, 231);
+      padding: 10px;
+      &:hover {
+        background-color: rgb(216, 216, 216);
+      }
+      &::after {
+        content: '';
+        width: 1px;
+        height: 24px;
+        background-color: rgb(192, 192, 192);
+        position: absolute;
+        right: -0.5px;
+      }
+    }
+
+    &_dislike {
+      transition: 0.15s;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: inherit;
+      font-weight: inherit;
+      padding: 10px;
+      background-color: rgb(231, 231, 231);
+      border-radius: 0px 25px 25px 0px;
+      &:hover {
+        background-color: rgb(216, 216, 216);
+      }
+    }
+    &_icon {
+      font-size: 22px;
+    }
+  }
+}
