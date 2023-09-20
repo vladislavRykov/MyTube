@@ -12,7 +12,7 @@ import ResultsPage from './pages/ResultsPage/ResultsPage';
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/MyTube">
       <GoogleOAuthProvider clientId={process.env.REACT_APP_CLIENT_ID || ''}>
         <Routes>
           <Route path="/" element={<MainLayout />}>
