@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { BrowserRouter, Route, Routes, useSearchParams } from 'react-router-dom';
+import { BrowserRouter, HashRouter, Route, Routes, useSearchParams } from 'react-router-dom';
 import MainLayout from './components/layouts/MainLayout/MainLayout';
 import HomePage from './pages/HomePage/HomePage';
 import VideoPage from './pages/VideoPage/VideoPage';
