@@ -13,7 +13,7 @@ import UnknownPage from './components/UI/UnknownPage/UnknownPage';
 
 function App() {
   return (
-    <BrowserRouter basename="/MyTube">
+    <HashRouter>
       <GoogleOAuthProvider clientId={process.env.REACT_APP_CLIENT_ID || ''}>
         <Routes>
           <Route path="/" element={<MainLayout />}>
@@ -27,7 +27,7 @@ function App() {
           <Route path="*" element={<UnknownPage />} />
         </Routes>
       </GoogleOAuthProvider>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 

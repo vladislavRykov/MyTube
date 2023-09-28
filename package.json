@@ -1,7 +1,7 @@
 {
   "name": "mytube",
   "version": "0.1.0",
-  "private": false,
+  "private": true,
   "homepage": "https://vladislavrykov.github.io/MyTube",
   "dependencies": {
     "@react-oauth/google": "^0.11.1",
