@@ -1,16 +1,18 @@
 {
   "files": {
-    "main.css": "/MyTube/static/css/main.fa496c48.css",
-    "main.js": "/MyTube/static/js/main.1c1639e3.js",
+    "main.css": "/MyTube/static/css/main.64602ecd.css",
+    "main.js": "/MyTube/static/js/main.22394837.js",
+    "static/media/pop_cat.gif": "/MyTube/static/media/pop_cat.10797fb4918d18179ab4.gif",
     "static/media/mockVideoAva.jpg": "/MyTube/static/media/mockVideoAva.be34403b98a2fde22871.jpg",
     "static/media/youtube-logo.png": "/MyTube/static/media/youtube-logo.d9ed8d5f2ada78a76737.png",
+    "static/media/solidCircleLoader.gif": "/MyTube/static/media/solidCircleLoader.336276feca038acdcf1c.gif",
     "static/media/user.png": "/MyTube/static/media/user.6c53c0a1c12e6d7eaa36.png",
     "index.html": "/MyTube/index.html",
-    "main.fa496c48.css.map": "/MyTube/static/css/main.fa496c48.css.map",
-    "main.1c1639e3.js.map": "/MyTube/static/js/main.1c1639e3.js.map"
+    "main.64602ecd.css.map": "/MyTube/static/css/main.64602ecd.css.map",
+    "main.22394837.js.map": "/MyTube/static/js/main.22394837.js.map"
   },
   "entrypoints": [
-    "static/css/main.fa496c48.css",
-    "static/js/main.1c1639e3.js"
+    "static/css/main.64602ecd.css",
+    "static/js/main.22394837.js"
   ]
 }
