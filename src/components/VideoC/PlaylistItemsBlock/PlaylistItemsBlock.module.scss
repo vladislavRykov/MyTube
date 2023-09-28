@@ -31,10 +31,27 @@
     font-size: 18px;
     color: rgb(33, 32, 32);
     margin-bottom: 5px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   &_playlistItems {
     max-height: 400px;
     overflow: auto;
+  }
+  &_itemsCountLoader {
+    height: 12px;
+  }
+  &_itemLoader {
+    height: 40px;
+    display: block;
+    margin: 0 auto;
+    &_wrapper {
+      padding: 10px 0px;
+      width: 100%;
+    }
   }
 }
 .cross {

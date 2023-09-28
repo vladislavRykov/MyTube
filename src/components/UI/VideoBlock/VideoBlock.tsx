@@ -8,12 +8,8 @@ interface VideoBlockProps extends ComponentPropsWithoutRef<'div'> {
 }
 
 const VideoBlock: React.FC<VideoBlockProps> = ({ player, ...rest }) => {
-  const { className, ...restProps } = rest;
   return (
-    <div
-      {...restProps}
-      style={{ maxWidth: player.embedWidth, maxHeight: player.embedHeight }}
-      className={cn(s.container, className)}>
+    <div {...rest} style={{ maxWidth: player.embedWidth, maxHeight: player.embedHeight }}>
       <div className={s.videowrapper}>
         <div dangerouslySetInnerHTML={{ __html: player.embedHtml }}></div>
       </div>

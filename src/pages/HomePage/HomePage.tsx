@@ -7,8 +7,9 @@ import { useSearchParams } from 'react-router-dom';
 import Button from '../../components/UI/Button/Button';
 import { RxCross1 } from 'react-icons/rx';
 import { VideosData } from '../../types/Videos';
-import { useFetching } from '../../hooks/useFetching';
 import { useScrollPagination } from '../../hooks/useScrollPagination';
+import { isAxiosError } from 'axios';
+import ErrorPage from '../../components/UI/ErrorPage/ErrorPage';
 const HomePage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   useEffect(() => {
@@ -44,6 +45,7 @@ const HomePage = () => {
       return {
         data: newItems,
         nextPageToken: data.nextPageToken,
+        TotalCount: data.pageInfo.totalResults,
       };
     }
     throw new Error('Нет результата');
@@ -51,23 +53,28 @@ const HomePage = () => {
   const [videos, isLoading, error] = useScrollPagination([], fetchVideos);
 
   const LoadingVideos = new Array(24).fill(5).map((_, idx) => <LoadingVideo />);
-  console.log(videos);
   return (
-    <div className={s.videos}>
-      {videos.map(({ snippet, contentDetails, statistics, id }: any) => (
-        <VideoItem
-          id={id}
-          title={snippet.title}
-          author={snippet.channelTitle}
-          channelImg={snippet.channelImg}
-          date={snippet.publishedAt}
-          videoPrev={snippet.thumbnails.medium}
-          duration={contentDetails.duration}
-          viewsCount={statistics.viewCount}
-        />
-      ))}
-      {isLoading && LoadingVideos}
-    </div>
+    <>
+      {!error ? (
+        <div className={s.videos}>
+          {videos.map(({ snippet, contentDetails, statistics, id }: any) => (
+            <VideoItem
+              id={id}
+              title={snippet.title}
+              author={snippet.channelTitle}
+              channelImg={snippet.channelImg}
+              date={snippet.publishedAt}
+              videoPrev={snippet.thumbnails.medium}
+              duration={contentDetails.duration}
+              viewsCount={statistics.viewCount}
+            />
+          ))}
+          {isLoading && LoadingVideos}
+        </div>
+      ) : (
+        <ErrorPage {...error} />
+      )}
+    </>
   );
 };
 

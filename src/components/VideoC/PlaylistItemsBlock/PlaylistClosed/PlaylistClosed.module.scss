@@ -1,0 +1,53 @@
+.playlistblock {
+  width: 100%;
+  border-radius: 12px;
+  background-color: rgb(236, 230, 230);
+  display: flex;
+  padding: 17px 15px;
+  justify-content: space-between;
+  align-items: center;
+  &_info {
+    max-width: 70%;
+    width: 100%;
+  }
+
+  &_openButton {
+  }
+  &_nextItemTitle {
+    margin-bottom: 8px;
+    font-weight: 500;
+    font-size: 14px;
+    color: rgb(33, 32, 32);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: fit-content;
+  }
+  &_playlistTitle {
+    display: block;
+    max-width: 50%;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  &_playlistTitleAndCount {
+    display: flex;
+    font-size: 12px;
+    color: rgb(108, 108, 108);
+  }
+
+  &_itemsCountLoader {
+    height: 12px;
+  }
+}
+.arrow {
+}
+@media (max-width: 1100px) {
+  .playlistblock_playlistTitleAndCount {
+    display: block;
+    line-height: 15px;
+  }
+}

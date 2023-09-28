@@ -3,6 +3,7 @@ import ContentLoader from 'react-content-loader';
 
 const LoadingSearchVideo = (props: any) => (
   <ContentLoader
+    style={{ width: '100%' }}
     speed={1.5}
     width={725}
     height={212}

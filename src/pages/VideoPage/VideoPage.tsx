@@ -10,6 +10,7 @@ import { Navigate, useLocation, useSearchParams } from 'react-router-dom';
 import PlaylistItemsBlock from '../../components/VideoC/PlaylistItemsBlock/PlaylistItemsBlock';
 import { ItemsEntity as VideoOfPlaylist } from '../../types/Videos';
 import { ContentDetails, Snippet, Status } from '../../types/PlaylistItems';
+import { useFetching } from '../../hooks/useFetching';
 
 export interface PlaylistBlockData2 {
   playlistItems:
@@ -53,6 +54,20 @@ const VideoPage: React.FC<WatchProps> = () => {
   const location = useLocation();
   const v = searchParams.get('v');
   const list = searchParams.get('list');
+  const getPlaylistData = async () => {
+    const { data: PlaylistData } = await YoutubeAPI.Playlist({
+      part: 'snippet,contentDetails',
+      id: list,
+    });
+    const finalObject = {
+      playlistCreator: PlaylistData.items[0].snippet?.channelTitle,
+      playlistTitle: PlaylistData.items[0].snippet?.title,
+      TotalCount: PlaylistData.items[0].contentDetails?.itemCount,
+    };
+    return finalObject;
+  };
+  const [fetchPlaylistData, isLoading, error] = useFetching(getPlaylistData);
+
   useEffect(() => {
     if (v) {
       YoutubeAPI.getVideoById({
@@ -80,7 +95,7 @@ const VideoPage: React.FC<WatchProps> = () => {
       const { data: PlaylistItemsData } = await YoutubeAPI.PlaylistItems({
         playlistId: list,
         part: 'contentDetails,snippet',
-        maxResults: 100,
+        maxResults: 50,
         pageToken: nextPageToken,
       });
       const videoIdArray = PlaylistItemsData.items.map((item) => item.contentDetails?.videoId);
@@ -97,22 +112,15 @@ const VideoPage: React.FC<WatchProps> = () => {
       return {
         data: items,
         nextPageToken: PlaylistItemsData.nextPageToken,
+        TotalCount: PlaylistItemsData.pageInfo.totalResults,
       };
     }
   };
   useEffect(() => {
     if (list) {
       (async () => {
-        const { data: PlaylistData } = await YoutubeAPI.Playlist({
-          part: 'snippet,contentDetails',
-          id: list,
-        });
-        const finalObject = {
-          playlistCreator: PlaylistData.items[0].snippet?.channelTitle,
-          playlistTitle: PlaylistData.items[0].snippet?.title,
-          TotalCount: PlaylistData.items[0].contentDetails?.itemCount,
-        };
-        setPlaylistData(finalObject);
+        const data = await fetchPlaylistData();
+        setPlaylistData(data);
       })();
     }
   }, [list]);
@@ -134,12 +142,14 @@ const VideoPage: React.FC<WatchProps> = () => {
       </div>
 
       <div className={s.recomendations}>
-        <PlaylistItemsBlock
-          playlistId={list}
-          getPlaylistItems={getPlaylistItems}
-          currentVideoId={v}
-          playlistData={playlistData}
-        />
+        {!isLoading && list && (
+          <PlaylistItemsBlock
+            playlistId={list}
+            getPlaylistItems={getPlaylistItems}
+            currentVideoId={v}
+            playlistData={playlistData}
+          />
+        )}
       </div>
     </div>
   );

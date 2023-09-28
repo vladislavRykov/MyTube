@@ -9,6 +9,7 @@ import VideoWatchLayout from './components/layouts/VideoWatchLayout/VideoWatchLa
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import LoginPage from './pages/LoginPage/LoginPage';
 import ResultsPage from './pages/ResultsPage/ResultsPage';
+import UnknownPage from './components/UI/UnknownPage/UnknownPage';
 
 function App() {
   return (
@@ -23,7 +24,7 @@ function App() {
             <Route path="watch" element={<VideoPage />} />
           </Route>
           <Route path="/auth" element={<LoginPage />} />
-          <Route path="*" element={<MainLayout />} />
+          <Route path="*" element={<UnknownPage />} />
         </Routes>
       </GoogleOAuthProvider>
     </BrowserRouter>

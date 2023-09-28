@@ -2,29 +2,22 @@ import React, { useEffect, useState } from 'react';
 import YoutubeAPI from '../../services/api/api';
 import { useSearchParams } from 'react-router-dom';
 import VideoResultItem from '../../components/ResultsC/VideoResultItem/VideoResultItem';
-import mockImg from '../../assets/static/mockVideoAva.jpg';
 import s from './ResultsPage.module.scss';
-import { ItemsEntity as SearchVideoItem } from '../../types/SearchData';
-import { ItemsEntity as VideoItem } from '../../types/Videos';
-import { Item as PlaylistItem } from '../../types/Playlist';
-import { Snippet as VideoSnippet } from '../../types/Videos';
-import {
-  ContentDetails as VideoContentDetails,
-  Statistics as VideoStatistics,
-} from './../../types/Videos';
 import { useScrollPagination } from '../../hooks/useScrollPagination';
-import LoadingVideo from '../../components/UI/Loaders/LoadingVideo/LoadingVideo';
 import LoadingSearchVideo from '../../components/UI/Loaders/LoadingSearchVideo/LoadingSearchVideo';
 import { ResultKinds } from '../../types/Common';
 import PlaylistResultItem from '../../components/ResultsC/PlaylistResultItem/PlaylistResultItem';
 import ChannelResultItem from '../../components/ResultsC/ChannelResultItem/ChannelResultItem';
-import { Thumbnails } from '../../types/Channel';
 import {
   Channel,
   Playlist,
   Video,
   getFullResultItems,
 } from '../../components/ResultsC/getFullResultItems';
+import Filters from '../../components/ResultsC/Filters/Filters';
+import { SearchQueryObj } from '../../types/Common';
+import { convertFiltersToSearchApiObj } from '../../components/ResultsC/Filters/convertFiltersToSearchApiObj';
+import ErrorPage from '../../components/UI/ErrorPage/ErrorPage';
 
 type ResultType = Video | Playlist | Channel | undefined;
 
@@ -32,14 +25,27 @@ const ResultsPage = () => {
   //Верстка.Адаптивность итемов
   const [searchParams, setSearchParams] = useSearchParams();
   const search = searchParams.get('search');
-
+  const queryString = searchParams.toString();
+  const queryObj = queryString.split('&').reduce<SearchQueryObj>((acc, el) => {
+    const keyAndValue = el.split('=');
+    if (keyAndValue[0] === 'search') return acc;
+    return { ...acc, [keyAndValue[0]]: keyAndValue[1] };
+  }, {});
+  console.log(queryString);
+  const convertedObj = convertFiltersToSearchApiObj(queryObj);
+  console.log(convertedObj);
   const Search = async (nextPageToken?: string) => {
+    console.log('new');
     if (search) {
       const searchWithoutPluses = search.split('+').join(' ');
       const { data: SearchData } = await YoutubeAPI.Search({
         part: 'snippet',
         q: searchWithoutPluses,
         pageToken: nextPageToken,
+        ...convertedObj,
+        publishedAfter:
+          convertedObj.publishedAfter &&
+          new Date(Date.now() - Number(convertedObj.publishedAfter)).toISOString(),
       });
       // const itemOrderArray = SearchData.items?.map((result) => result.id.kind);
       const itemsInfo = SearchData.items?.reduce(
@@ -72,7 +78,6 @@ const ResultsPage = () => {
         },
       );
       const fullResultItems = itemsInfo && (await getFullResultItems(itemsInfo));
-      console.log(fullResultItems);
       let playlistIdx = 0,
         videoIdx = 0,
         channelIdx = 0;
@@ -91,6 +96,7 @@ const ResultsPage = () => {
       return {
         data: resultsItems,
         nextPageToken: SearchData.nextPageToken,
+        TotalCount: SearchData.pageInfo.totalResults,
       };
     } else {
       setSearchParams((prevParams) => {
@@ -99,73 +105,9 @@ const ResultsPage = () => {
       });
     }
   };
-  // const SearchFunc = async (nextPageToken?: string) => {
-  //   if (search) {
-  //     const searchWithoutPluses = search.split('+').join(' ');
-  //     const { data: SearchData } = await YoutubeAPI.Search({
-  //       part: 'snippet',
-  //       q: searchWithoutPluses,
-  //       pageToken: nextPageToken,
-  //     });
-  //     const searchItems = SearchData.items?.map(async (result) => {
-  //       const id = result.id?.videoId || result.id?.playlistId || result.id?.channelId;
-  //       let additionalData:
-  //         | (VideoItem & { channelImg: Thumbnails | null })
-  //         | PlaylistItem
-  //         | null
-  //         | undefined;
-  //       if (result.id.kind === ResultKinds.Video) {
-  //         const { data: VideosData } = await YoutubeAPI.getVideos({
-  //           part: 'snippet,contentDetails,statistics',
-  //           id,
-  //         });
-  //         const { data: ChannelData } = await YoutubeAPI.getChannelById({
-  //           part: ['snippet', 'statistics'],
-  //           id: result.snippet.channelId,
-  //         });
-  //         const PreData = VideosData?.items?.[0] && {
-  //           channelImg: ChannelData?.items?.[0].snippet.thumbnails || null,
-  //           ...VideosData?.items?.[0],
-  //         };
-  //         console.log(ChannelData);
-  //         additionalData = PreData || null;
-  //       } else if (result.id.kind === ResultKinds.Channel) {
-  //       } else {
-  //         const { data: PlaylistData } = await YoutubeAPI.Playlist({
-  //           part: 'snippet,contentDetails',
-  //           id,
-  //         });
-  //         additionalData = PlaylistData?.items?.[0] || null;
-  //       }
-  //       if (!additionalData) {
-  //         return result;
-  //       }
-  //       return {
-  //         ...additionalData,
-  //         ...result,
-  //       };
-  //     });
-  //     // if (!searchItems) {
-  //     //   return {
-  //     //     data: [],
-  //     //     nextPageToken: null,
-  //     //   };
-  //     // }
-  //     const awaitedVideos = searchItems ? await Promise.all(searchItems) : [];
-  //     return {
-  //       data: awaitedVideos,
-  //       nextPageToken: SearchData.nextPageToken,
-  //     };
-  //   } else {
-  //     setSearchParams((prevParams) => {
-  //       searchParams.set('search', '');
-  //       return prevParams;
-  //     });
-  //   }
-  // };
   const [results, isLoading, error] = useScrollPagination<
     (Video | Playlist | Channel | undefined)[] | undefined
-  >([], Search, [search]);
+  >([], Search, [queryString]);
 
   const resultsItems = results?.map((result) => {
     switch (result?.kind) {
@@ -217,16 +159,21 @@ const ResultsPage = () => {
   const LoadingVideos = Array(10)
     .fill(1)
     .map((el) => <LoadingSearchVideo />);
+  console.log(error);
+  if (error) return <ErrorPage {...error} />;
   return (
     //Разные типы в массиве...думай че сделать можно
     <div className={s.wrapper}>
-      {resultsItems?.length === 0 && !error && !isLoading ? (
-        <div>Нет результатов</div>
-      ) : (
-        resultsItems
-      )}
-      {error && <div>Произошла ошибка. Проверте подключение к интернету.</div>}
-      {isLoading && LoadingVideos}
+      <Filters />
+      <div className={s.resultsElements}>
+        {resultsItems?.length === 0 && !error && !isLoading ? (
+          <div>Нет результатов</div>
+        ) : (
+          resultsItems
+        )}
+
+        {isLoading && LoadingVideos}
+      </div>
     </div>
   );
 };

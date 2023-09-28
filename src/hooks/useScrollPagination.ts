@@ -5,40 +5,58 @@ import { VideosData } from '../types/Videos';
 import { useEffect, useRef, useState } from 'react';
 import { ArrowFunction } from 'typescript';
 import { useFetching } from './useFetching';
+import { useSearchParams } from 'react-router-dom';
+import { playlistItemsMock } from '../components/VideoC/PlaylistItemsBlock/playlistItems';
+import { ErrorObject } from '../types/Common';
 
 export const useScrollPagination = <T = any>(
   initial: any,
-  cb: () => Promise<{ data: any; nextPageToken: string | undefined } | undefined>,
+  cb: () => Promise<
+    { data: any; nextPageToken: string | undefined; TotalCount: number } | undefined
+  >,
   dep: any[] = [],
-  scrollItem: React.RefObject<any> | null = null,
-): [T, boolean, null | any, boolean] => {
+  options: { scrollItem?: React.RefObject<any>; TotalCount?: number; scrollDeps?: any[] } = {
+    scrollDeps: [],
+  },
+): [T, boolean, null | ErrorObject, boolean] => {
   const [NewCb, isLoading, error] = useFetching(cb);
   const [data, setData] = useState<ItemsEntity[]>(initial);
   const [nextPageToken, setNextPage] = useState<string | null>(null);
   const [isNearBottom, setIsNearBottom] = useState<boolean>(false);
   const firstScroll = useRef(true);
+  const [totalCount, setTotalCount] = useState<number | null>(null);
+  const [searchParams, _] = useSearchParams();
   useEffect(() => {
     const getVideos = async () => {
+      let pageToken: string | null = null;
+      let dataLength: number = 0;
       setData([]);
-      const cbData: { data: any; nextPageToken: string } = await NewCb();
-      if (cbData) {
-        setData(cbData.data);
-        setNextPage(cbData.nextPageToken);
-      }
+      const idx = searchParams.get('idx');
+      do {
+        const cbData: { data: any; nextPageToken: string | undefined; TotalCount: number } =
+          await NewCb(pageToken);
+        if (cbData) {
+          dataLength += cbData.data.length;
+          pageToken = cbData.nextPageToken;
+          setData((prev) => [...prev, ...cbData.data]);
+          setNextPage(cbData.nextPageToken);
+          setTotalCount(cbData.TotalCount);
+        }
+      } while (idx && Number(idx) > dataLength);
     };
     getVideos().finally((_) => {
-      window.scrollTo(0, 0);
+      !options.scrollItem && window.scrollTo(0, 0);
     });
   }, dep);
   useEffect(() => {
-    console.log(scrollItem);
     const onScrollToDown = async (e: React.UIEvent<any, UIEvent>) => {
-      console.log(123);
-      let condition = window.innerHeight + window.scrollY >= document.body.scrollHeight;
-      if (scrollItem)
+      let condition = window.innerHeight + window.scrollY >= document.body.scrollHeight - 10;
+      if (options.scrollItem) {
         condition =
-          e.currentTarget.scrollHeight <= e.currentTarget.scrollTop + e.currentTarget.clientHeight;
-      if (condition) {
+          e.currentTarget.scrollHeight - 10 <=
+          e.currentTarget.scrollTop + e.currentTarget.clientHeight;
+      }
+      if (condition && data.length < totalCount) {
         setIsNearBottom(true);
         if (firstScroll.current) {
           firstScroll.current = false;
@@ -52,15 +70,15 @@ export const useScrollPagination = <T = any>(
         }
       }
     };
-    if (scrollItem) {
-      scrollItem.current.addEventListener('scroll', onScrollToDown);
+    if (options.scrollItem) {
+      options.scrollItem.current?.addEventListener('scroll', onScrollToDown);
     } else {
       window.addEventListener('scroll', onScrollToDown);
     }
     return () => {
-      scrollItem?.current.removeEventListener('scroll', onScrollToDown);
+      options.scrollItem?.current?.removeEventListener('scroll', onScrollToDown);
       window.removeEventListener('scroll', onScrollToDown);
     };
-  }, [nextPageToken]);
+  }, [nextPageToken, ...options.scrollDeps]);
   return [data, isLoading, error, isNearBottom];
 };

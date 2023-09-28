@@ -15,7 +15,8 @@
 }
 .element {
   color: black;
-  transition: 0.2s ease-out;
+  transition: 0.1s linear;
+
   padding: 15px;
   display: flex;
   align-items: center;

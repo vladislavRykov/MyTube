@@ -1,0 +1,57 @@
+[
+  {
+    "title": "По дате загрузки",
+    "options": [
+      { "title": "За последний час", "value": "3600000", "key": "publishedAfter" },
+      { "title": "Сегодня", "value": "86400000", "key": "publishedAfter" },
+      { "title": "За эту неделю", "value": "604800000", "key": "publishedAfter" },
+      { "title": "За этот месяц", "value": "2419200000", "key": "publishedAfter" },
+      { "title": "За этот год", "value": "31536000000", "key": "publishedAfter" }
+    ],
+    "canChoseMany": false,
+    "oneOptionMustBeSelected": false
+  },
+  {
+    "title": "Тип",
+    "options": [
+      { "title": "Видео", "value": "video", "key": "type" },
+      { "title": "Каналы", "value": "channel", "key": "type" },
+      { "title": "Плейлисты", "value": "playlist", "key": "type" },
+      { "title": "Фильмы", "value": "movie", "key": "type" }
+    ],
+    "canChoseMany": false,
+    "oneOptionMustBeSelected": false
+  },
+  {
+    "title": "Длительность",
+    "options": [
+      { "title": "Более 20 минут", "value": "long", "key": "videoDuration" },
+      { "title": "От 4 до 20 минут", "value": "medium", "key": "videoDuration" },
+      { "title": "Менее 4 минут", "value": "short", "key": "videoDuration" }
+    ],
+    "canChoseMany": false,
+    "oneOptionMustBeSelected": false
+  },
+  {
+    "title": "Особенности",
+    "options": [
+      { "title": "Прямые трансляции", "value": "live", "key": "special" },
+      { "title": "HD", "value": "high", "key": "special" },
+      { "title": "Субтитры", "value": "closedCaption", "key": "special" },
+      { "title": "В формате 3D", "value": "3d", "key": "special" }
+    ],
+    "canChoseMany": true,
+    "oneOptionMustBeSelected": false
+  },
+  {
+    "title": "Упорядочить",
+    "options": [
+      { "title": "По релевантности", "value": null, "key": "order" },
+      { "title": "По дате загрузки", "value": "date", "key": "order" },
+      { "title": "По числу просмотров", "value": "viewCount", "key": "order" },
+      { "title": "По рейтингу", "value": "rating", "key": "order" }
+    ],
+    "canChoseMany": false,
+    "oneOptionMustBeSelected": true
+  }
+]

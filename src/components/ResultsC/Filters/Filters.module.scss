@@ -1,0 +1,53 @@
+.filters {
+  max-width: 90%;
+  &_toggleButton {
+    font-size: 14px;
+    font-weight: 500;
+    background-color: white;
+    padding: 8px 12px;
+    border-radius: 30px;
+    transition: 0.1s;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    &:hover {
+      background-color: rgb(231, 231, 231);
+    }
+    &:active {
+      background-color: rgb(204, 204, 204);
+    }
+  }
+  &_filterImg {
+    font-size: 20px;
+    transform: rotate(90deg);
+    color: rgb(78, 78, 78);
+  }
+  &_selector {
+    padding-top: 10px;
+    transition: 0.3s;
+    height: 400px;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    &_closed {
+      padding-top: 0px;
+      height: 0;
+      cursor: default;
+      overflow: hidden;
+    }
+  }
+}
+@media (max-width: 800px) {
+  .filters {
+    &_selector {
+      flex-direction: column;
+      height: 600px;
+      &_closed {
+        padding-top: 0px;
+        height: 0;
+        cursor: default;
+        overflow: hidden;
+      }
+    }
+  }
+}

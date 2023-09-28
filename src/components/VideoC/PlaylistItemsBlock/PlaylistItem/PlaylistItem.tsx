@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import s from './PlaylistItem.module.scss';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { DefaultOrMediumOrHighOrStandardOrMaxres as VideoThumb } from '../../../../types/Videos';
@@ -6,6 +6,8 @@ import ResponceImg from '../../../UI/ResponceImg/ResponceImg';
 import cn from 'classnames';
 import { useSearchParams } from 'react-router-dom';
 import { IoTriangleSharp } from 'react-icons/io5';
+import formatDuration from 'date-fns/formatDuration';
+import { formatVideoDuration } from '../../../../utils/formatVideoDuration';
 
 interface PlaylistItemProps {
   duration: string | undefined;
@@ -15,6 +17,7 @@ interface PlaylistItemProps {
   isSelected: boolean;
   orderNumber: number | undefined;
   videoId: string | undefined;
+  containerRef: React.RefObject<HTMLDivElement>;
 }
 
 const PlaylistItem: React.FC<PlaylistItemProps> = ({
@@ -25,26 +28,33 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({
   isSelected,
   videoId,
   orderNumber,
+  containerRef,
 }) => {
-  console.log(isSelected);
   const [searchParams, setSearchParams] = useSearchParams();
+  const playlistItemRef = useRef<HTMLDivElement | null>(null);
   const setNextVideo = () => {
     setSearchParams((sParams) => {
       sParams.set('v', videoId || '');
       return sParams;
     });
   };
-  const timeArray = duration?.match(/(\d+)(?=[MHS])/gi) || [];
-  const formatted = timeArray
-    .map((item, idx) => {
-      if (timeArray.length === 1) return `0:${item.length < 2 ? '0' + item : item}`;
-      if (timeArray.length >= 3 && idx === 0) return item;
-      if (item.length < 2) return '0' + item;
-      return item;
-    })
-    .join(':');
+  const formattedDuration = duration && formatVideoDuration(duration);
+  useEffect(() => {
+    if (isSelected) {
+      setSearchParams((Sparams) => {
+        orderNumber && Sparams.set('idx', orderNumber.toString());
+        return Sparams;
+      });
+      if (playlistItemRef.current) {
+        containerRef.current?.scrollTo({
+          top: playlistItemRef.current.offsetTop - 300,
+        });
+      }
+    }
+  }, [isSelected]);
   return (
     <div
+      ref={playlistItemRef}
       onClick={setNextVideo}
       className={cn(s.playlistItem, { [s.playlistItem_selected]: isSelected })}>
       <div className={s.playlistItem_orderNumber}>
@@ -53,7 +63,7 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({
 
       <div className={s.playlistItem_imgWrapper}>
         <ResponceImg className={s.playlistItem_image} src={videoPrev?.url} />
-        <div className={s.playlistItem_time}>{formatted}</div>
+        <div className={s.playlistItem_time}>{formattedDuration}</div>
       </div>
       <div className={s.playlistItem_text}>
         <h2 className={s.playlistItem_title}>{title}</h2>

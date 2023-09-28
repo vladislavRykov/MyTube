@@ -10,7 +10,6 @@ interface ChannelProps {
   videoData: Video | null;
 }
 const Channel: React.FC<ChannelProps> = ({ videoData }) => {
-  console.log(videoData);
   return (
     <div className={s.channel}>
       <div className={s.left}>

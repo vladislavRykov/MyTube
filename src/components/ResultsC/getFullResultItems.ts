@@ -90,7 +90,6 @@ export const getFullResultItems = async (obj: getFullResultItemsProps) => {
         playlistId: playlist.id,
         maxResults: 1,
       });
-      console.log(PlaylistItemsData);
       return {
         ...playlist,
         channelTumbnail: findedChannel?.snippet.thumbnails || null,
