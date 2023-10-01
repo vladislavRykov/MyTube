@@ -29,12 +29,12 @@ const Header: React.FC<HeaderProps> = ({ setIsSidebarOpen }) => {
       <div>
         {/* <IoIosNotificationsOutline />
         <div>
-          <img src=''/>
-        </div> */}
+          <img src="" />
+        </div>
         <Link to={'auth'} className={s.header_log}>
           <img className={s.header_log_img} src={user} alt="user" />
           Войти
-        </Link>
+        </Link> */}
       </div>
     </div>
   );
