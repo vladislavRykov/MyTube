@@ -23,7 +23,6 @@ function App() {
           <Route path="/" element={<VideoWatchLayout />}>
             <Route path="watch" element={<VideoPage />} />
           </Route>
-          <Route path="/auth" element={<LoginPage />} />
           <Route path="*" element={<UnknownPage />} />
         </Routes>
       </GoogleOAuthProvider>
